@@ -42,27 +42,27 @@ var options = {
        host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
     };
 
-router.post('/send', twilio.webhook(options), 
+router.get('/send', twilio.webhook(options), 
   function (request, response) {
     var twiml = new twilio.TwimlResponse();
     twiml.message('This HTTP request came from the patio');
     response.send(twiml.toString());
 });
 
-// app.post('/send', twilio.webhook(), function(request, response) {
-//     var twiml = new twilio.TwimlResponse();
-//     twiml.message('This HTTP request came from Twilio!');
-//     response.send(twiml);
-// });
+app.post('/send', twilio.webhook(), function(request, response) {
+    var twiml = new twilio.TwimlResponse();
+    twiml.message('This HTTP request came from Twilio!');
+    response.send(twiml);
+});
 
-// client.sms.messages.post({
-//     to:'+16515559999',
-//     from:'+14503334455',
-//     body:'word to your mother.'
-// }, function(err, text) {
-//     console.log('You sent: '+ text.body);
-//     console.log('Current status of this text message is: '+ text.status);
-// });
+client.sms.messages.post({
+    to:'+16515559999',
+    from:'+14503334455',
+    body:'word to your mother.'
+}, function(err, text) {
+    console.log('You sent: '+ text.body);
+    console.log('Current status of this text message is: '+ text.status);
+});
 
 app.use('/', router);
 
