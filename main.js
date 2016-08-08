@@ -32,7 +32,7 @@ router.post('/send', function(req, res) {
     console.log('Current status of this text message is: '+ text.status);
 });
 	//res.send("You sent a text"); 
-  var  twim1 = new twilio.TrimResponse();
+  var  twim1 = new twilio.TwimlResponse();
   twim1.message("Hiiiiiiii");
   res.send(twim1);
 });
