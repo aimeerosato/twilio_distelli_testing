@@ -37,7 +37,7 @@ var options = {
        host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/'
     };
 
-app.post('/send', twilio.webhook(options), 
+router.post('/send', twilio.webhook(options), 
   function(request, response) {
     var twiml = new twilio.TwimlResponse();
     twiml.message('This HTTP request came from Twilio!');
