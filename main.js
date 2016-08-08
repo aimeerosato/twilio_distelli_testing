@@ -3,7 +3,6 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 var bodyParser = require('body-parser');
-var twilio = require('twilio');
 
 //Connect to Twilio
 var dotenv = require('dotenv').config();
@@ -34,14 +33,12 @@ app.get('/', function(req, res) {
 // 	res.send("You sent a text"); 
 // });
 
-app.post('/send', twilio.webhook([
-    process.env.TWILIO_AUTH_TOKEN, 
-    {
-       host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
-       protocol:'https'  
-    }]
-    
-), function(request, response) {
+var options = {
+       host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/'
+    };
+
+app.post('/send', twilio.webhook(options), 
+  function(request, response) {
     var twiml = new twilio.TwimlResponse();
     twiml.message('This HTTP request came from Twilio!');
     response.send(twiml);
