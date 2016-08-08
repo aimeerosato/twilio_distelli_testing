@@ -19,23 +19,23 @@ app.get('/', function(req, res) {
 	res.send("hello");
 })
 
-// router.post('/send', function(req, res) {
-// 	console.log("inside router /post");
-// 	console.log("req is ", req.body);
+router.post('/send', function(req, res) {
+	console.log("inside router /post");
+	console.log("req is ", req.body);
 
-// 	client.sms.messages.post({
-//     to: '+' + req.body.number,
-//     from: process.env.TWILIO_NUMBER,
-//     body: req.body.message
-// }, function(err, text) {
-//     console.log('You sent: '+ text.body);
-//     console.log('Current status of this text message is: '+ text.status);
-// });
-// 	//res.send("You sent a text"); 
-//   var  twim1 = new twilio.TwimlResponse();
-//   twim1.message("This is from the post /send");
-//   res.send(twim1.toString());
-// });
+	client.sms.messages.post({
+    to: '+' + req.body.number,
+    from: process.env.TWILIO_NUMBER,
+    body: req.body.message
+}, function(err, text) {
+    console.log('You sent: '+ text.body);
+    console.log('Current status of this text message is: '+ text.status);
+});
+	//res.send("You sent a text"); 
+  var  twim1 = new twilio.TwimlResponse();
+  twim1.message("This is from the post /send");
+  res.send(twim1.toString());
+});
 
 
 var options = {
@@ -49,20 +49,20 @@ router.get('/send', twilio.webhook(options),
     response.send(twiml.toString());
 });
 
-app.post('/send', twilio.webhook(), function(request, response) {
-    var twiml = new twilio.TwimlResponse();
-    twiml.message('This HTTP request came from Twilio!');
-    response.send(twiml);
-});
+// router.post('/send', twilio.webhook(), function(request, response) {
+//     var twiml = new twilio.TwimlResponse();
+//     twiml.message('This HTTP request came from Twilio!');
+//     response.send(twiml);
+// });
 
-client.sms.messages.post({
-    to:'+16515559999',
-    from:'+14503334455',
-    body:'word to your mother.'
-}, function(err, text) {
-    console.log('You sent: '+ text.body);
-    console.log('Current status of this text message is: '+ text.status);
-});
+// client.sms.messages.post({
+//     to:'+16515559999',
+//     from:'+14503334455',
+//     body:'word to your mother.'
+// }, function(err, text) {
+//     console.log('You sent: '+ text.body);
+//     console.log('Current status of this text message is: '+ text.status);
+// });
 
 app.use('/', router);
 
