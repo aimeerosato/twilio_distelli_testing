@@ -40,6 +40,7 @@ app.get('/', function(req, res) {
 router.post('/send', function(req, res) {
     var twilio = require('twilio');
     var twiml = new twilio.TwimlResponse();
+    console.log("This is req.body.Body ", req.body.Body);
     if (req.body.Body == 'hello') {
         twiml.message('Hi!');
     } else if(req.body.Body == 'bye') {
