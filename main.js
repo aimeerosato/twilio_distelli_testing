@@ -35,8 +35,11 @@ app.get('/', function(req, res) {
 // });
 
 app.post('/send', twilio.webhook({
-    host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
-    protocol:'https'
+    authToken: process.env.TWILIO_AUTH_TOKEN, 
+    {
+       host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
+       protocol:'https'  
+    }
 }), function(request, response) {
     var twiml = new twilio.TwimlResponse();
     twiml.message('This HTTP request came from Twilio!');
