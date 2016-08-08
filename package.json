@@ -2,7 +2,7 @@
   "name": "twilio_testing_ar",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "start": "node ./bin/www"
   },
