@@ -46,7 +46,7 @@ router.post('/send', twilio.webhook(options),
   function (request, response) {
     var twiml = new twilio.TwimlResponse();
     twiml.message('This HTTP request came from the patio');
-    response.send(twiml);
+    response.send(twiml.toString());
 });
 
 // app.post('/send', twilio.webhook(), function(request, response) {
