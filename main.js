@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({
 app.get('/', function(req, res) {
 	res.send("hello");
 })
-
+//twilio.webhook(),
 router.post('/send', function(req, res) {
 	console.log("inside router /post");
 	console.log("req is ", req.body);
@@ -33,21 +33,21 @@ router.post('/send', function(req, res) {
 });
 	//res.send("You sent a text"); 
   var  twim1 = new twilio.TwimlResponse();
-  twim1.message("This is from the post /send");
+  twim1.message("This is your response");
   res.send(twim1.toString());
 });
 
 
-var options = {
-       host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
-    };
+// var options = {
+//        host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
+//     };
 
-router.get('/send', twilio.webhook(options), 
-  function (request, response) {
-    var twiml = new twilio.TwimlResponse();
-    twiml.message('This HTTP request came from the patio');
-    response.send(twiml.toString());
-});
+// router.get('/send', twilio.webhook(options), 
+//   function (request, response) {
+//     var twiml = new twilio.TwimlResponse();
+//     twiml.message('This HTTP request came from the patio');
+//     response.send(twiml.toString());
+// });
 
 // router.post('/send', twilio.webhook(), function(request, response) {
 //     var twiml = new twilio.TwimlResponse();
