@@ -34,17 +34,33 @@ app.get('/', function(req, res) {
 // 	res.send("You sent a text"); 
 // });
 
-var options = {
-       host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
-       protocol:'https'
-    };
+router.post('/send', function(req, res) {
+    //Validate that this request really came from Twilio...
+    if (twilio.validateExpressRequest(req, process.env.TWILIO_AUTH_TOKEN)) {
+        var twiml = new twilio.TwimlResponse();
 
-router.post('/send', twilio.webhook(options), 
-  function (request, response) {
-    var twiml = new twilio.TwimlResponse();
-    twiml.message('This HTTP request came from Twilio!');
-    response.send(twiml);
+        twiml.say('Hi!  Thanks for checking out my app!')
+            .play('http://myserver.com/mysong.mp3');
+
+        res.type('text/xml');
+        res.send(twiml.toString());
+    }
+    else {
+        res.send('you are not twilio.  Buzz off.');
+    }
 });
+
+// var options = {
+//        host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
+//        protocol:'https'
+//     };
+
+// router.post('/send', twilio.webhook(options), 
+//   function (request, response) {
+//     var twiml = new twilio.TwimlResponse();
+//     twiml.message('This HTTP request came from Twilio!');
+//     response.send(twiml);
+// });
 
 // app.post('/send', twilio.webhook(), function(request, response) {
 //     var twiml = new twilio.TwimlResponse();
