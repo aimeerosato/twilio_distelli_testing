@@ -39,8 +39,7 @@ router.post('/send', function(req, res) {
     if (twilio.validateExpressRequest(req, process.env.TWILIO_AUTH_TOKEN)) {
         var twiml = new twilio.TwimlResponse();
 
-        twiml.say('Hi!  Thanks for checking out my app!')
-            .play('http://myserver.com/mysong.mp3');
+        twiml.message('Hi!  Inside of this test!')
 
         res.type('text/xml');
         res.send(twiml.toString());
