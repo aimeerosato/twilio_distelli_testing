@@ -50,7 +50,7 @@ router.post('/send', function(req, res) {
 // });
 
 app.use('/', router);
-
-app.listen(3001, function () {
+app.set('port', process.env.PORT || 3001);
+app.listen(app.get('port'), function () {
   console.log('Example app listening on port 3001!');
 });
