@@ -19,36 +19,24 @@ app.get('/', function(req, res) {
 	res.send("hello");
 })
 
-// router.post('/send', function(req, res) {
-// 	console.log("inside router /post");
-// 	console.log("req is ", req.body);
-
-// 	client.sms.messages.post({
-//     to: '+' + req.body.number,
-//     from: process.env.TWILIO_NUMBER,
-//     body: req.body.message
-// }, function(err, text) {
-//     console.log('You sent: '+ text.body);
-//     console.log('Current status of this text message is: '+ text.status);
-// });
-// 	res.send("You sent a text"); 
-// });
-
-
 router.post('/send', function(req, res) {
-    //Validate that this request really came from Twilio...
-    if (twilio.validateExpressRequest(req, '2b9aa0f6522b13fef82941dbe15beeaa')) {
-        var twiml = new twilio.TwimlResponse();
+	console.log("inside router /post");
+	console.log("req is ", req.body);
 
-        twiml.message('Hi!  Inside of this test!')
-
-        res.type('text/xml');
-        res.send(twiml.toString());
-    }
-    else {
-        res.send('you are not twilio.  Buzz off.');
-    }
+	client.sms.messages.post({
+    to: '+' + req.body.number,
+    from: process.env.TWILIO_NUMBER,
+    body: req.body.message
+}, function(err, text) {
+    console.log('You sent: '+ text.body);
+    console.log('Current status of this text message is: '+ text.status);
 });
+	//res.send("You sent a text"); 
+  var  twim1 = new twilio.TrimResponse();
+  twim1.message("Hiiiiiiii");
+  res.send(twim1);
+});
+
 
 // var options = {
 //        host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
