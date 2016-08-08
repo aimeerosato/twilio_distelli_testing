@@ -34,13 +34,14 @@ app.get('/', function(req, res) {
 // 	res.send("You sent a text"); 
 // });
 
-app.post('/send', twilio.webhook({
+app.post('/send', twilio.webhook([
     authToken: process.env.TWILIO_AUTH_TOKEN, 
     {
        host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
        protocol:'https'  
-    }
-}), function(request, response) {
+    }]
+    
+), function(request, response) {
     var twiml = new twilio.TwimlResponse();
     twiml.message('This HTTP request came from Twilio!');
     response.send(twiml);
