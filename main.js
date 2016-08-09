@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var twilio = require('twilio');
 
 //Connect to Twilio
-var dotenv = require('dotenv').config();
+var dotenv = require('dotenv').config({silent: true});
 var client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 
@@ -42,7 +42,7 @@ router.post('/send',
 });
 
 router.post('/receive',
-	// twilio.webhook(),//ensure message comes from twilio.
+	twilio.webhook(),//ensure message comes from twilio.
 	function(req,res,next){
 		console.log('entering receive route for Twilio');
 		console.log('req.body: ', req.body);
@@ -57,6 +57,7 @@ router.post('/receive',
     	twiml.message("We did not understand your message.  Type either 'hello' or 'bye.'");
     }
     console.log("This is the twiml response ", twiml);
+    //res.writeHead(200, {'Content-Type': 'text/xml'});
     res.status(200).send(twiml);
 });
 
