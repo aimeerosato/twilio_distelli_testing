@@ -19,7 +19,7 @@ app.get('/', function(req, res) {
 	res.send("hello");
 })
 //twilio.webhook(), took it out - maybe we don't need it because it's configured on twilio dashboard?
-router.post('/send', client.webhook(), function(req, res) {
+router.post('/send', twilio.webhook(), function(req, res) {
 	console.log("inside router /post");
 	console.log("req is ", req.body);
 
