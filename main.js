@@ -12,36 +12,59 @@ var client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILI
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
-  extended: true
+	extended: true
 }));
+app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
 	res.send("hello");
 })
 //twilio.webhook(), took it out - maybe we don't need it because it's configured on twilio dashboard?
-router.post('/send', twilio.webhook(), function(req, res) {
-	console.log("inside router /post");
-	console.log("req is ", req.body);
+router.post('/send',
+	function(req, res) {
+	 console.log("inside router /post");
+	 console.log("req is ", req.body);
 
 	client.sms.messages.post({
-    to: '+' + req.body.number,
-    from: process.env.TWILIO_NUMBER,
-    body: req.body.message
-}, function(err, text) {
-    console.log('You sent: '+ text.body);
-    console.log('Current status of this text message is: '+ text.status);
+		to: '+' + req.body.number,
+		from: process.env.TWILIO_NUMBER,
+		body: req.body.message
+	}, function(err, text) {
+		if(err){
+			console.error(err);
+			res.status(500).send(err)
+		}else{
+			console.log('You sent: '+ text.body);
+			console.log('Current status of this text message is: '+ text.status);
+			res.status(200).send('Text sent')
+		}
+	});
 });
-	//res.send("You sent a text"); 
-  var  twim1 = new twilio.TwimlResponse();
-  twim1.message("This is your response");
-  res.send(twim1.toString());
+
+router.post('/receive',
+	// twilio.webhook(),//ensure message comes from twilio.
+	function(req,res,next){
+		console.log('entering receive route for Twilio');
+		console.log('req.body: ', req.body);
+    var twiml = new twilio.TwimlResponse();
+    var incomingMessage = req.body.Body.toLowerCase().trim();
+    console.log("This is the incoming message", incomingMessage);
+    if(incomingMessage === "hello") {
+    	twiml.message("Hi to you!");
+    } else if (incomingMessage === "bye") {
+    	twiml.message("Bye!");
+    } else {
+    	twiml.message("We did not understand your message.  Type either 'hello' or 'bye.'");
+    }
+    console.log("This is the twiml response ", twiml);
+    res.status(200).send(twiml);
 });
 
 // router.post('/send', function(req, res) {
 //     var twilio = require('twilio');
 //     var twiml = new twilio.TwimlResponse();
 //     console.log("This is req.body.Body ", req.body.Body);
-//     if (req.body.Body == 'hello') {
+//     if (req.body.Body.toLowerCase().trim() == 'hello') {
 //         twiml.message('Hi!');
 //     } else if(req.body.Body == 'bye') {
 //         twiml.message('Goodbye');
