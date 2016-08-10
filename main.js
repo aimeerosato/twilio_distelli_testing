@@ -72,7 +72,7 @@ router.post('/receive',
     	twiml.message("We did not understand your message.  Type either 'hello' or 'bye.'");
     }
     console.log("This is the twiml response ", twiml);
-    //res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.writeHead(200, {'Content-Type': 'text/xml'});
     res.status(200).send(twiml);
 });
 
