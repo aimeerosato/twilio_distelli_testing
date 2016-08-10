@@ -3,27 +3,41 @@ var express = require('express');
 var app = express();
 var router = express.Router();
 var bodyParser = require('body-parser');
+var path = require('path');
 var twilio = require('twilio');
+var mongoose = require('mongoose');
+
+//database setup 
+//var Message = require('./server/messageSchema.js');
+
+//console.log("This is this message ", Message);
+
+//mongoose.connect("mongodb://localhost/twilio");
 
 //Connect to Twilio
 var dotenv = require('dotenv').config({silent: true});
 var client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
+//Set up Pug view template
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-app.use(express.static('public'));
+//app.use(express.static('views')); //don't need b/c now using pug
 app.use(bodyParser.urlencoded({
 	extended: true
-}));
-app.use(bodyParser.json());
+})); //twilio API needs
+app.use(bodyParser.json()); //needed for local testing
 
 app.get('/', function(req, res) {
-	res.send("hello");
-})
+	res.render('layout.pug'); //puts the layout template into there
+});
+
 //twilio.webhook(), took it out - maybe we don't need it because it's configured on twilio dashboard?
 router.post('/send',
 	function(req, res) {
 	 console.log("inside router /post");
-	 console.log("req is ", req.body);
+	 console.log("req.body is ", req.body);
+	 console.log("this is the whole req", req);
 
 	client.sms.messages.post({
 		to: '+' + req.body.number,
@@ -34,6 +48,7 @@ router.post('/send',
 			console.error(err);
 			res.status(500).send(err)
 		}else{
+			console.log("This is the whole res ", res);
 			console.log('You sent: '+ text.body);
 			console.log('Current status of this text message is: '+ text.status);
 			res.status(200).send('Text sent')
@@ -60,25 +75,6 @@ router.post('/receive',
     //res.writeHead(200, {'Content-Type': 'text/xml'});
     res.status(200).send(twiml);
 });
-
-// router.post('/send', function(req, res) {
-//     var twilio = require('twilio');
-//     var twiml = new twilio.TwimlResponse();
-//     console.log("This is req.body.Body ", req.body.Body);
-//     if (req.body.Body.toLowerCase().trim() == 'hello') {
-//         twiml.message('Hi!');
-//     } else if(req.body.Body == 'bye') {
-//         twiml.message('Goodbye');
-//     } else {
-//         twiml.message('No Body param match, Twilio sends this in the request to your server.');
-//     }
-//     res.writeHead(200, {'Content-Type': 'text/xml'});
-//     res.end(twiml.toString());
-// });
-
-// var options = {
-//        host:'http://twilio-testing-monday-dev.us-east-1.elasticbeanstalk.com/',
-//     };
 
 app.use('/', router);
 

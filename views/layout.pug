@@ -1,0 +1,12 @@
+doctype html
+html(lang='en')
+	head
+		title Twilio Testing
+	body
+		h1 Twilio Testing
+		form(action='/send', method='post')
+			input(placeholder='Phone Number', type='text', name='number')
+			br
+			input(placeholder='Write your message here!', type='text', name='message')
+			br
+			button(type='submit') Submit
