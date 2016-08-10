@@ -48,7 +48,7 @@ router.post('/send',
 			console.error(err);
 			res.status(500).send(err)
 		}else{
-			console.log("This is the whole res ", res);
+			console.log("This is the text ", text);
 			console.log('You sent: '+ text.body);
 			console.log('Current status of this text message is: '+ text.status);
 			res.status(200).send('Text sent')
